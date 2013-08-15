@@ -12,7 +12,7 @@ import (
 
   "github.com/reusee/goquery"
   "code.google.com/p/go.net/html"
-  "github.com/reusee/to_runes"
+  "../rune_conv"
 )
 
 type Header map[string]string
@@ -75,7 +75,7 @@ func (self *Client) RespToDoc(resp *http.Response) (*goquery.Document, error) {
   if self.Encoding != "utf-8" {
     buf := new(bytes.Buffer)
     io.Copy(buf, resp.Body)
-    runes, err := to_runes.From(self.Encoding, buf.Bytes())
+    runes, err := rune_conv.From(self.Encoding, buf.Bytes())
     if err != nil {
       return nil, err
     }
