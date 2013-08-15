@@ -9,11 +9,15 @@ import (
   "time"
   "io"
   "bytes"
+  "log"
 
   "github.com/reusee/goquery"
   "code.google.com/p/go.net/html"
   "github.com/reusee/go-packages/rune_conv"
+  "code.google.com/p/go.net/proxy"
 )
+
+var SOCKS_PROXY string
 
 type Header map[string]string
 
@@ -44,6 +48,11 @@ var transport = &http.Transport{
 }
 
 func NewClient() *Client {
+  if SOCKS_PROXY != "" {
+    p, err := proxy.SOCKS5("tcp", SOCKS_PROXY, nil, proxy.Direct)
+    if err != nil { log.Fatal(err) }
+    transport.Dial = p.Dial
+  }
   jar, _ := cookiejar.New(nil)
   client := &http.Client{
     Transport: transport,
