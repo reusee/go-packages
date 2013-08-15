@@ -99,6 +99,20 @@ func (self *Client) RespToDoc(resp *http.Response) (*goquery.Document, error) {
   return goquery.NewDocumentFromNode(node), nil
 }
 
+func (self *Client) GetRetry(url string, retry int) (*http.Response, error) {
+  for {
+    resp, err := self.Get(url)
+    if err != nil {
+      if retry == 0 {
+        return nil, err
+      }
+      retry -= 1
+      continue
+    }
+    return resp, nil
+  }
+}
+
 func (self *Client) GetDoc(url string) (*goquery.Document, error) {
   resp, err := self.Get(url)
   if err != nil {
