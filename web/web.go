@@ -12,7 +12,7 @@ import (
 
   "github.com/reusee/goquery"
   "code.google.com/p/go.net/html"
-  "../rune_conv"
+  "github.com/reusee/go-packages/rune_conv"
 )
 
 type Header map[string]string
